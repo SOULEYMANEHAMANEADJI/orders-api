@@ -1,6 +1,5 @@
 package com.luqman.rest_api_orders.exceptions;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -20,6 +20,11 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
   flyway:
     enabled: false
 
