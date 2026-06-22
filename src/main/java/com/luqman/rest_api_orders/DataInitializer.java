@@ -2,11 +2,14 @@ package com.luqman.rest_api_orders;
 
 import com.luqman.rest_api_orders.entities.Customer;
 import com.luqman.rest_api_orders.entities.Product;
+import com.luqman.rest_api_orders.entities.User;
 import com.luqman.rest_api_orders.repositories.ProductRepository;
 import com.luqman.rest_api_orders.repositories.CustomerRepository;
+import com.luqman.rest_api_orders.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,11 +21,28 @@ public class DataInitializer implements CommandLineRunner {
 
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
+        seedUsers();
         seedCustomers();
         seedProducts();
+    }
+
+    private void seedUsers() {
+        if (userRepository.count() > 0) {
+            return;
+        }
+
+        User admin = User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("admin123"))
+                .role("ADMIN")
+                .build();
+
+        userRepository.save(admin);
     }
 
     private void seedCustomers() {
