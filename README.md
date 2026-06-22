@@ -89,7 +89,7 @@ rest-api-orders/
 | **Migrations** | Flyway |
 | **Validation** | Jakarta Bean Validation |
 | **API Docs** | Springdoc OpenAPI 3.0 |
-| **Security** | Spring Security / JWT (jjwt) |
+| **Security** | Spring Security / JWT (jwt) |
 | **Build** | Maven 3.9.5 |
 | **Containerization** | Docker & Docker Compose |
 | **Utilities** | Lombok |
