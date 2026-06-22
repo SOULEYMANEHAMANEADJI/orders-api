@@ -32,6 +32,8 @@ services:
       FLYWAY_ENABLED: "true"
       HIKARI_MAX_POOL_SIZE: "10"
       HIKARI_MIN_IDLE: "2"
+      JWT_SECRET: "${JWT_SECRET:-404d6c756f2f4c756f2f4c756f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20}"
+      JWT_EXPIRATION_MS: "${JWT_EXPIRATION_MS:-86400000}"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8633/actuator/health"]
       interval: 15s

@@ -31,6 +31,13 @@ The API provides full CRUD operations for **Products**, **Customers**, and **Ord
 - OpenAPI 3.0 specification auto-generated
 - Comprehensive endpoint documentation with examples
 
+✅ **Authentication & Security**
+- JWT-based authentication (Bearer token)
+- Login and registration endpoints
+- Stateless session management
+- Password encryption with BCrypt
+- Role-based access (USER / ADMIN)
+
 ✅ **Production Ready**
 - Flyway database migrations
 - Jakarta Bean Validation
@@ -82,6 +89,7 @@ rest-api-orders/
 | **Migrations** | Flyway |
 | **Validation** | Jakarta Bean Validation |
 | **API Docs** | Springdoc OpenAPI 3.0 |
+| **Security** | Spring Security / JWT (jjwt) |
 | **Build** | Maven 3.9.5 |
 | **Containerization** | Docker & Docker Compose |
 | **Utilities** | Lombok |
@@ -90,7 +98,38 @@ rest-api-orders/
 
 ## 🔌 API Endpoints
 
-### Products (`/products`)
+### Authentication (`/auth`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/login` | Authenticate and get JWT token |
+| POST | `/auth/register` | Create a new user account |
+
+**Example - Login:**
+```bash
+curl -X POST http://localhost:8633/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "admin123"}'
+```
+
+**Response:**
+```json
+{"token": "eyJhbGciOiJIUzI1NiJ9..."}
+```
+
+**Example - Register:**
+```bash
+curl -X POST http://localhost:8633/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username": "newuser", "password": "password123"}'
+```
+
+All other endpoints require a valid JWT in the `Authorization` header:
+```bash
+curl -H "Authorization: Bearer <token>" http://localhost:8633/products
+```
+
+---
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -361,9 +400,11 @@ springdoc:
 
 You can override defaults using environment variables:
 ```bash
-export SPRING_DATASOURCE_URL=jdbc:mysql://mysql-host:3307/orders_db
+export SPRING_DATASOURCE_URL=jdbc:mysql://mysql-host:3306/orders_db
 export SPRING_DATASOURCE_USERNAME=user
 export SPRING_DATASOURCE_PASSWORD=password
+export JWT_SECRET=your-256-bit-secret-key-here
+export JWT_EXPIRATION_MS=86400000
 export SPRING_PROFILES_ACTIVE=local
 ```
 
