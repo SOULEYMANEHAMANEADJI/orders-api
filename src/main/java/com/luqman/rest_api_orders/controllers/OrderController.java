@@ -9,6 +9,7 @@ import com.luqman.rest_api_orders.dtos.UpdateOrderRequest;
 import com.luqman.rest_api_orders.entities.Order;
 import com.luqman.rest_api_orders.services.OrderService;
 import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @Tag(name = "Orders", description = "Order management")
 @RequiredArgsConstructor
+@Transactional
 public class OrderController {
 
     private final OrderService orderService;

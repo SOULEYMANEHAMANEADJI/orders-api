@@ -175,6 +175,7 @@
 								<exclude>com/luqman/rest_api_orders/enums/*.class</exclude>
 								<exclude>com/luqman/rest_api_orders/DataInitializer.class</exclude>
 								<exclude>com/luqman/rest_api_orders/repositories/**/*.class</exclude>
+								<exclude>com/luqman/rest_api_orders/config/LoggingFilter.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>
