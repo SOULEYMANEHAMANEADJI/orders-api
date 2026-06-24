@@ -34,6 +34,9 @@ build/
 # Local environment variables file (should not be committed)
 .env
 
+# Generated JWT token files
+*token.txt
+
 # Logs & temporary output
 *.log
 *.err

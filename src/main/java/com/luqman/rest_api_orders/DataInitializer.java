@@ -32,7 +32,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void seedUsers() {
-        if (userRepository.count() > 0) {
+        if (userRepository.findByUsername("admin").isPresent()) {
             return;
         }
 

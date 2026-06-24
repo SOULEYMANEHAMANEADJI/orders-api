@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,6 +31,11 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers(HttpMethod.GET, "/products/**", "/customers/**", "/orders/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/products/**", "/customers/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/products/**", "/customers/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/products/**", "/customers/**").hasRole("ADMIN")
+                .requestMatchers("/orders/**").authenticated()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex
@@ -39,6 +45,13 @@ public class SecurityConfig {
                     response.getWriter().write("{\"timestamp\":\"" + java.time.LocalDateTime.now() +
                             "\",\"status\":401,\"error\":\"Unauthorized\",\"message\":\"" +
                             authException.getMessage() + "\",\"path\":\"" + request.getRequestURI() + "\"}");
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.getWriter().write("{\"timestamp\":\"" + java.time.LocalDateTime.now() +
+                            "\",\"status\":403,\"error\":\"Forbidden\",\"message\":\"" +
+                            accessDeniedException.getMessage() + "\",\"path\":\"" + request.getRequestURI() + "\"}");
                 })
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
